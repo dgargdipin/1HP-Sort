@@ -77,7 +77,7 @@ __global__ void OneHpTail(int minVal, int maxVal, int* Ap, int* y);
 *	@param maxVal: maxVal of d_x
 *	@param verbose: if verbose is on input and output array will be printed
 */
-void test_one_hp(int* d_x, int N,int minVal,int maxVal,bool verbose);
+void test_one_hp(int* d_x, int N, int minVal, int maxVal, bool verbose);
 
 
 /**
@@ -92,7 +92,7 @@ void test_one_hp(int* d_x, int N,int minVal,int maxVal,bool verbose);
  *  @param maxVal: maximum integer in x + 1
  *  @return: pointer to sorted array stored on device
  */
-int *cubsort(int* d_x,int N,int minVal,int maxVal);
+int* cubsort(int* d_x, int N, int minVal, int maxVal);
 
 /**
 * Function: test_cubsort
@@ -103,7 +103,7 @@ int *cubsort(int* d_x,int N,int minVal,int maxVal);
 *	@param maxVal: maxVal of d_x
 *	@param verbose: if verbose is on input and output array will be printed
 */
-void test_cubsort(int* d_x, int N, int minVal, int maxVal,bool verbose);
+void test_cubsort(int* d_x, int N, int minVal, int maxVal, bool verbose);
 
 /**
 * Function: test_sort
@@ -117,7 +117,7 @@ void test_cubsort(int* d_x, int N, int minVal, int maxVal,bool verbose);
 *	@param func: sort function argument
 *	@param verbose: if verbose is on input and output array will be printed
 */
-void test_sort(int* d_x, int N, int minVal, int maxVal, int* (*func)(int*, int, int, int),bool verbose);
+void test_sort(int* d_x, int N, int minVal, int maxVal, int* (*func)(int*, int, int, int), bool verbose);
 
 
 /**
