@@ -1,5 +1,6 @@
 #pragma once
 #include "cuda_runtime.h"
+#include<vector>
 /**
 * Function:printArray
 *   prints an array stored on host
@@ -74,8 +75,9 @@ __global__ void OneHpTail(int minVal, int maxVal, int* Ap, int* y);
 *	@param N: length of input array d_x
 *	@param minVal: minVal of d_x
 *	@param maxVal: maxVal of d_x
+*	@param verbose: if verbose is on input and output array will be printed
 */
-void test_one_hp(int* d_x, int N,int minVal,int maxVal);
+void test_one_hp(int* d_x, int N,int minVal,int maxVal,bool verbose);
 
 
 /**
@@ -99,8 +101,9 @@ int *cubsort(int* d_x,int N,int minVal,int maxVal);
 *	@param N: length of input array d_x
 *	@param minVal: minVal of d_x
 *	@param maxVal: maxVal of d_x
+*	@param verbose: if verbose is on input and output array will be printed
 */
-void test_cubsort(int* d_x, int N, int minVal, int maxVal);
+void test_cubsort(int* d_x, int N, int minVal, int maxVal,bool verbose);
 
 /**
 * Function: test_sort
@@ -112,6 +115,18 @@ void test_cubsort(int* d_x, int N, int minVal, int maxVal);
 *	@param minVal: minVal of d_x
 *	@param maxVal: maxVal of d_x
 *	@param func: sort function argument
+*	@param verbose: if verbose is on input and output array will be printed
 */
-void test_sort(int* d_x, int N, int minVal, int maxVal, int* (*func)(int*, int, int, int));
+void test_sort(int* d_x, int N, int minVal, int maxVal, int* (*func)(int*, int, int, int),bool verbose);
 
+
+/**
+* Function:generate_random_unique_array
+* Generates a random vector of size N, with maximum range of values M
+* @param N:size of generated array
+* @param M: range of generated array
+* @return : random vector of size N, with maximum range of values M
+*/
+std::vector<int> generate_random_unique_array(int N, int M);
+
+void getInput(int& N, int& M, bool& verbose);

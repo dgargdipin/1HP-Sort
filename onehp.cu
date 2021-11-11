@@ -2,7 +2,7 @@
 #include<iostream>
 #include "onehp.cuh"
 #include<cub/cub.cuh>
-
+#include<algorithm>
 
 void printArray(int* a, int n) {
     for (int i = 0; i < n; i++) {
@@ -69,14 +69,14 @@ __global__ void OneHpTail(int minVal, int maxVal, int* Ap, int* y) {
     else if (Ap[i - 1] != Ap[i])y[Ap[i - 1]] = i;
 }
 
-void test_one_hp(int* d_x, int N, int minVal, int maxVal) {
+void test_one_hp(int* d_x, int N, int minVal, int maxVal,bool verbose) {
     printf("-------------Testing 1HP algorithm---------------------\n");
-    test_sort(d_x, N, minVal, maxVal, &one_hp_sort);
+    test_sort(d_x, N, minVal, maxVal, &one_hp_sort,verbose);
 };
-void test_cubsort(int* d_x, int N, int minVal, int maxVal)
+void test_cubsort(int* d_x, int N, int minVal, int maxVal,bool verbose)
 {
     printf("-------------Testing CubSort algorithm---------------------\n");
-    test_sort(d_x, N, minVal, maxVal, &cubsort);
+    test_sort(d_x, N, minVal, maxVal, &cubsort,verbose);
 }
 
 
@@ -102,10 +102,10 @@ int* cubsort(int* d_x, int N, int minVal,int maxVal)
 
 
 
-void test_sort(int* d_x, int N, int minVal,int maxVal, int* (*func)(int*, int,int,int)) {
+void test_sort(int* d_x, int N, int minVal,int maxVal, int* (*func)(int*, int,int,int),bool verbose) {
     float milliseconds = 0;
     char input_str[] = "input:";
-    debugArray(input_str, d_x, N);
+    if (verbose)debugArray(input_str, d_x, N);
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
@@ -116,7 +116,33 @@ void test_sort(int* d_x, int N, int minVal,int maxVal, int* (*func)(int*, int,in
     cudaEventElapsedTime(&milliseconds, start, stop);
 
     char output_str[] = "output:";
-    debugArray(output_str, d_y, N);
+    if (verbose)debugArray(output_str, d_y, N);
     printf("Took %f milliseconds\n", milliseconds);
     cudaFree(d_y);
+}
+
+std::vector<int> generate_random_unique_array(int N, int M) {
+    std::vector<int> x(M);
+
+
+    for (int i = 0; i < M; i++) {
+        x[i] = i;
+    }
+    std::srand(unsigned(std::time(0)));
+    std::random_shuffle(x.begin(), x.end());
+    x = std::vector<int>(x.begin(), x.begin() + N );
+    return x;
+
+};
+void getInput(int& N, int& M,bool& verbose) {
+    std::cout << "Enter the length of random array: ";
+    std::cin >> N;
+    std::cout << std::endl;
+    std::cout << "Enter the range of random array: ";
+    std::cin >> M;
+    std::cout << std::endl;
+    std::cout << "Do you want to verbose output? (y/n): ";
+    char verboseChar;
+    std::cin >> verboseChar;
+    verbose = (verboseChar == 'y');
 }
